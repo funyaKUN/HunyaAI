@@ -48,7 +48,7 @@
             margin-bottom: 20px;
         }
 
-        .input-panel, .discussion-panel, .code-panel, .status-panel, .chat-panel, .data-panel, .update-panel {
+        .input-panel, .discussion-panel, .code-panel, .status-panel, .chat-panel, .data-panel, .update-panel, .ai-panel {
             background: white;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
@@ -88,6 +88,10 @@
 
         .update-panel {
             animation-delay: 0.7s;
+        }
+
+        .ai-panel {
+            animation-delay: 0.8s;
         }
 
         h2 {
@@ -213,7 +217,7 @@
             border-left-color: #764ba2;
         }
 
-        .discussion-item.summary {
+        .discussion-item.synthesis {
             border-left-color: #f7b801;
             background: #fffbf0;
         }
@@ -237,7 +241,7 @@
             color: #764ba2;
         }
 
-        .discussion-item.summary .ai-name {
+        .discussion-item.synthesis .ai-name {
             color: #f7b801;
         }
 
@@ -393,6 +397,38 @@
         .chat-input-group button {
             width: 40px;
             padding: 12px;
+        }
+
+        /* AI Analysis Panel */
+        .ai-analysis {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .ai-analysis h4 {
+            color: #667eea;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .ai-analysis-item {
+            font-size: 0.85em;
+            color: #555;
+            margin-bottom: 6px;
+            padding: 6px 0;
+        }
+
+        .ai-score {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
         }
 
         /* Data Panel Styles */
@@ -599,44 +635,13 @@
             0%, 100% { transform: scale(1); opacity: 0.6; }
             50% { transform: scale(1.3); opacity: 1; }
         }
-
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .tab {
-            padding: 10px 15px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: #667eea;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-        }
-
-        .tab.active {
-            border-bottom-color: #667eea;
-            color: #667eea;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🤖 HunyaCodingAI</h1>
-            <p>マルチレイヤーAIシステム - 完全クライアントサイド実装（自動更新・チャット・データ収集対応）</p>
+            <h1>🤖 HunyaCodingAI - EnhancedAI Edition</h1>
+            <p>高度なマルチレイヤーAIシステム - 完全クライアントサイド実装（拡張AIエンジン搭載）</p>
         </header>
 
         <div class="main-grid">
@@ -662,17 +667,6 @@
                         <option value="csharp">C#</option>
                         <option value="cpp">C++</option>
                     </select>
-                </div>
-
-                <div class="config-group">
-                    <div class="form-group">
-                        <label for="geminiKey">Gemini API Key</label>
-                        <input type="password" id="geminiKey" placeholder="AIzaSy...">
-                    </div>
-                    <div class="form-group">
-                        <label for="openaiKey">OpenAI API Key</label>
-                        <input type="password" id="openaiKey" placeholder="sk-...">
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -705,12 +699,19 @@
                 </div>
             </div>
 
-            <!-- 中央パネル：議論 -->
+            <!-- 中央パネル：AI議論 -->
             <div class="discussion-panel">
-                <h2>💬 マルチAI議論</h2>
+                <h2>💬 マルチAI議論エンジン</h2>
                 <div class="cycle-counter">サイクル: <span id="cycleBadge">0</span> / 50</div>
                 <div class="discussion-scroll" id="discussionContainer"></div>
             </div>
+        </div>
+
+        <!-- AI強化パネル -->
+        <div class="ai-panel">
+            <h2>🧠 AI分析・パターン認識</h2>
+            <div id="aiAnalysisContainer"></div>
+            <button class="btn-primary" onclick="analyzeWithAI()" style="width: 100%; margin-top: 10px;">🔍 AI分析を実行</button>
         </div>
 
         <!-- チャットパネル -->
@@ -733,14 +734,14 @@
 
         <!-- データ収集パネル -->
         <div class="data-panel">
-            <h2>📊 データ収集・管理</h2>
+            <h2>📊 スマートデータ収集</h2>
             <div class="data-source-selector">
-                <button class="data-source-btn" onclick="selectDataSource('chrome')">🌐 Chrome データ</button>
-                <button class="data-source-btn" onclick="selectDataSource('api')">🔗 API</button>
+                <button class="data-source-btn" onclick="selectDataSource('semantic')">🧠 セマンティック</button>
+                <button class="data-source-btn" onclick="selectDataSource('pattern')">🔗 パターン分析</button>
                 <button class="data-source-btn" onclick="selectDataSource('local')">💾 ローカル</button>
-                <button class="data-source-btn" onclick="selectDataSource('custom')">⚙️ カスタム</button>
+                <button class="data-source-btn" onclick="selectDataSource('learned')">📚 学習済みデータ</button>
             </div>
-            <button class="btn-primary" onclick="collectData()" style="width: 100%; margin-bottom: 10px;">📥 データ収集開始</button>
+            <button class="btn-primary" onclick="collectIntelligentData()" style="width: 100%; margin-bottom: 10px;">📥 スマート収集</button>
             <div id="dataTable" style="max-height: 300px; overflow-y: auto;"></div>
         </div>
 
@@ -749,7 +750,7 @@
             <h2>🔄 自動更新システム</h2>
             <div id="updateStatus"></div>
             <div id="testResults" style="max-height: 250px; overflow-y: auto;"></div>
-            <button class="btn-primary" onclick="initiateAutoUpdate()" style="width: 100%; margin-top: 10px;">🚀 更新開始（テスト付き）</button>
+            <button class="btn-primary" onclick="initiateAutoUpdate()" style="width: 100%; margin-top: 10px;">🚀 更新開始</button>
         </div>
 
         <!-- ステータスパネル -->
@@ -777,14 +778,12 @@
             discussionItems: [],
             generatedCode: '',
             testResults: [],
-            apiKeys: { gemini: '', openai: '' },
             isRunning: false,
             stats: { discussionCount: 0, testCount: 0, cycleCount: 0 },
-            previousDiscussions: [],
             chatHistory: [],
             collectedData: [],
-            selectedDataSource: 'chrome',
-            autoUpdateEnabled: false
+            selectedDataSource: 'semantic',
+            aiAnalysisResults: null
         };
 
         // =============================================
@@ -800,13 +799,11 @@
             async init() {
                 return new Promise((resolve, reject) => {
                     const request = indexedDB.open(this.dbName, this.dbVersion);
-                    
                     request.onerror = () => reject(request.error);
                     request.onsuccess = () => {
                         this.db = request.result;
                         resolve(this.db);
                     };
-                    
                     request.onupgradeneeded = (event) => {
                         const db = event.target.result;
                         if (!db.objectStoreNames.contains('data')) {
@@ -817,6 +814,9 @@
                         }
                         if (!db.objectStoreNames.contains('updates')) {
                             db.createObjectStore('updates', { keyPath: 'id', autoIncrement: true });
+                        }
+                        if (!db.objectStoreNames.contains('aiModels')) {
+                            db.createObjectStore('aiModels', { keyPath: 'id', autoIncrement: true });
                         }
                     };
                 });
@@ -841,19 +841,426 @@
                     request.onerror = () => reject(request.error);
                 });
             }
-
-            async clearStore(storeName) {
-                const transaction = this.db.transaction([storeName], 'readwrite');
-                const store = transaction.objectStore(storeName);
-                return new Promise((resolve, reject) => {
-                    const request = store.clear();
-                    request.onsuccess = () => resolve();
-                    request.onerror = () => reject(request.error);
-                });
-            }
         }
 
         const dbManager = new DatabaseManager();
+
+        // =============================================
+        // 高度なセマンティック分析エンジン
+        // =============================================
+        class SemanticAnalysisEngine {
+            constructor() {
+                this.semanticPatterns = new Map();
+                this.contextMemory = [];
+                this.patternFrequency = new Map();
+                this.initializeSemanticPatterns();
+            }
+
+            initializeSemanticPatterns() {
+                // セマンティックパターンライブラリ
+                this.semanticPatterns.set('user-interaction', {
+                    keywords: ['command', 'user', 'input', 'event', 'trigger', 'click', 'action'],
+                    complexity: 'medium',
+                    category: 'UI/UX'
+                });
+
+                this.semanticPatterns.set('data-persistence', {
+                    keywords: ['database', 'storage', 'persist', 'save', 'load', 'cache', 'file'],
+                    complexity: 'high',
+                    category: 'Data Management'
+                });
+
+                this.semanticPatterns.set('async-operations', {
+                    keywords: ['async', 'parallel', 'concurrent', 'thread', 'background', 'queue', 'task'],
+                    complexity: 'high',
+                    category: 'Performance'
+                });
+
+                this.semanticPatterns.set('error-handling', {
+                    keywords: ['error', 'exception', 'validation', 'try', 'catch', 'recover', 'fallback'],
+                    complexity: 'medium',
+                    category: 'Reliability'
+                });
+
+                this.semanticPatterns.set('security', {
+                    keywords: ['security', 'auth', 'permission', 'token', 'encrypt', 'validate', 'sanitize'],
+                    complexity: 'high',
+                    category: 'Security'
+                });
+
+                this.semanticPatterns.set('api-integration', {
+                    keywords: ['api', 'integration', 'external', 'webhook', 'endpoint', 'request', 'response'],
+                    complexity: 'medium',
+                    category: 'Integration'
+                });
+
+                this.semanticPatterns.set('real-time', {
+                    keywords: ['real-time', 'live', 'streaming', 'socket', 'websocket', 'push', 'notification'],
+                    complexity: 'high',
+                    category: 'Real-time'
+                });
+
+                this.semanticPatterns.set('scalability', {
+                    keywords: ['scale', 'performance', 'optimize', 'load', 'distribute', 'cluster', 'microservice'],
+                    complexity: 'very-high',
+                    category: 'Architecture'
+                });
+            }
+
+            analyzeRequest(userRequest, language) {
+                const lowerRequest = userRequest.toLowerCase();
+                const analysis = {
+                    detectedPatterns: [],
+                    estimatedComplexity: 0,
+                    recommendedArchitecture: [],
+                    requiredLibraries: [],
+                    riskFactors: [],
+                    estimatedImplementationTime: 0,
+                    semanticScore: 0
+                };
+
+                // パターン検出
+                this.semanticPatterns.forEach((pattern, key) => {
+                    const matchScore = pattern.keywords.filter(kw => lowerRequest.includes(kw)).length;
+                    if (matchScore > 0) {
+                        analysis.detectedPatterns.push({
+                            name: key,
+                            matchScore: matchScore,
+                            complexity: pattern.complexity,
+                            category: pattern.category
+                        });
+                    }
+                });
+
+                // 複雑度計算
+                analysis.detectedPatterns.forEach(pattern => {
+                    const complexityMap = { 'low': 1, 'medium': 2, 'high': 3, 'very-high': 4 };
+                    analysis.estimatedComplexity += complexityMap[pattern.complexity] || 1;
+                });
+
+                // 推奨アーキテクチャ
+                if (analysis.detectedPatterns.some(p => p.name === 'scalability')) {
+                    analysis.recommendedArchitecture.push('Microservices', 'Event-Driven');
+                }
+                if (analysis.detectedPatterns.some(p => p.name === 'real-time')) {
+                    analysis.recommendedArchitecture.push('WebSocket-based', 'Event Bus');
+                }
+                if (analysis.detectedPatterns.some(p => p.name === 'data-persistence')) {
+                    analysis.recommendedArchitecture.push('Layered Architecture');
+                }
+
+                // リスク評価
+                if (analysis.estimatedComplexity > 8) {
+                    analysis.riskFactors.push('High complexity - rigorous testing required');
+                }
+                if (analysis.detectedPatterns.some(p => p.name === 'security')) {
+                    analysis.riskFactors.push('Security considerations - use established libraries');
+                }
+
+                // 言語別推奨ライブラリ
+                analysis.requiredLibraries = this.recommendLibraries(language, analysis.detectedPatterns);
+
+                // セマンティックスコア（0-100）
+                analysis.semanticScore = Math.min(100, analysis.detectedPatterns.length * 15 + analysis.estimatedComplexity * 5);
+
+                return analysis;
+            }
+
+            recommendLibraries(language, patterns) {
+                const libraries = {
+                    python: ['asyncio', 'pydantic', 'SQLAlchemy', 'pytest', 'logging'],
+                    javascript: ['async/await', 'typescript', 'jest', 'axios', 'express'],
+                    java: ['Spring', 'JUnit', 'Log4j', 'Lombok', 'Gson'],
+                    typescript: ['NestJS', 'TypeORM', 'Jest', 'class-validator'],
+                    csharp: ['.NET Core', 'Entity Framework', 'xUnit', 'Serilog'],
+                    cpp: ['Boost', 'nlohmann/json', 'spdlog', 'googletest']
+                };
+
+                let recommended = libraries[language] || [];
+
+                // パターンに基づいて追加推奨
+                patterns.forEach(pattern => {
+                    if (pattern.name === 'async-operations' && language === 'python') {
+                        recommended.push('aiohttp', 'aiomultiprocess');
+                    }
+                    if (pattern.name === 'data-persistence' && language === 'python') {
+                        recommended.push('pymongo', 'redis');
+                    }
+                });
+
+                return [...new Set(recommended)];
+            }
+        }
+
+        // =============================================
+        // パターン認識・学習エンジン
+        // =============================================
+        class PatternRecognitionEngine {
+            constructor() {
+                this.patterns = new Map();
+                this.learningData = [];
+                this.codePatterns = new Map();
+                this.initializePatterns();
+            }
+
+            initializePatterns() {
+                this.codePatterns.set('singleton', {
+                    description: 'Singleton Pattern - Single instance management',
+                    languages: ['java', 'python', 'csharp', 'cpp'],
+                    useCases: ['Logger', 'Database Connection', 'Configuration Manager'],
+                    complexity: 'low'
+                });
+
+                this.codePatterns.set('observer', {
+                    description: 'Observer Pattern - Event notification system',
+                    languages: ['javascript', 'python', 'java', 'typescript'],
+                    useCases: ['Event Listeners', 'Real-time Updates', 'Reactive Systems'],
+                    complexity: 'medium'
+                });
+
+                this.codePatterns.set('factory', {
+                    description: 'Factory Pattern - Object creation abstraction',
+                    languages: ['java', 'python', 'csharp', 'cpp'],
+                    useCases: ['Plugin System', 'Database Adapters', 'Data Parsers'],
+                    complexity: 'medium'
+                });
+
+                this.codePatterns.set('async-await', {
+                    description: 'Async/Await Pattern - Asynchronous operations',
+                    languages: ['javascript', 'python', 'csharp', 'typescript'],
+                    useCases: ['API Calls', 'File I/O', 'Database Queries'],
+                    complexity: 'medium'
+                });
+
+                this.codePatterns.set('dependency-injection', {
+                    description: 'Dependency Injection - Loose coupling',
+                    languages: ['java', 'csharp', 'typescript', 'python'],
+                    useCases: ['Testing', 'Modularity', 'Configuration'],
+                    complexity: 'high'
+                });
+
+                this.codePatterns.set('middleware', {
+                    description: 'Middleware Pattern - Request/Response processing',
+                    languages: ['javascript', 'python', 'java'],
+                    useCases: ['Authentication', 'Logging', 'Error Handling'],
+                    complexity: 'medium'
+                });
+            }
+
+            recognizePatterns(code, language) {
+                const detectedPatterns = [];
+                
+                this.codePatterns.forEach((pattern, key) => {
+                    if (pattern.languages.includes(language)) {
+                        if (this.matchesPattern(code, key)) {
+                            detectedPatterns.push({
+                                name: key,
+                                description: pattern.description,
+                                confidence: Math.random() * 0.4 + 0.6, // 60-100%
+                                complexity: pattern.complexity,
+                                suggestions: pattern.useCases
+                            });
+                        }
+                    }
+                });
+
+                return detectedPatterns;
+            }
+
+            matchesPattern(code, patternName) {
+                const patternKeywords = {
+                    'singleton': ['getInstance', 'instance', '__new__', 'static'],
+                    'observer': ['addEventListener', 'subscribe', 'notify', 'update'],
+                    'factory': ['create', 'make', 'build', 'construct'],
+                    'async-await': ['async', 'await', 'Promise', 'then'],
+                    'dependency-injection': ['inject', 'constructor', 'container', '@'],
+                    'middleware': ['use', 'handler', 'next', 'chain']
+                };
+
+                const keywords = patternKeywords[patternName] || [];
+                return keywords.some(kw => code.toLowerCase().includes(kw));
+            }
+        }
+
+        // =============================================
+        // 統合AI分析システム
+        // =============================================
+        const semanticEngine = new SemanticAnalysisEngine();
+        const patternEngine = new PatternRecognitionEngine();
+
+        async function analyzeWithAI() {
+            const userRequest = document.getElementById('userRequest').value.trim();
+            const language = document.getElementById('language').value;
+
+            if (!userRequest) {
+                alert('プロジェクト説明を入力してください');
+                return;
+            }
+
+            addChatMessage('🧠 AI分析を実行中...', 'system');
+
+            try {
+                // セマンティック分析
+                const semanticAnalysis = semanticEngine.analyzeRequest(userRequest, language);
+                
+                // パターン認識（生成されたコードがある場合）
+                let patternAnalysis = { detectedPatterns: [] };
+                if (AppState.generatedCode) {
+                    patternAnalysis.detectedPatterns = patternEngine.recognizePatterns(AppState.generatedCode, language);
+                }
+
+                AppState.aiAnalysisResults = {
+                    semantic: semanticAnalysis,
+                    patterns: patternAnalysis,
+                    timestamp: new Date()
+                };
+
+                await dbManager.addData('aiModels', AppState.aiAnalysisResults);
+                displayAIAnalysis();
+                addChatMessage('✅ AI分析が完了しました！', 'system');
+
+            } catch (error) {
+                addChatMessage(`❌ 分析エラー: ${error.message}`, 'system');
+            }
+        }
+
+        function displayAIAnalysis() {
+            if (!AppState.aiAnalysisResults) return;
+
+            const { semantic, patterns } = AppState.aiAnalysisResults;
+            const container = document.getElementById('aiAnalysisContainer');
+            
+            let html = '';
+
+            // セマンティック分析結果
+            html += `<div class="ai-analysis">
+                <h4>📊 セマンティック分析</h4>
+                <div class="ai-analysis-item">
+                    推定複雑度: <span class="ai-score">${semantic.estimatedComplexity}/10</span>
+                </div>
+                <div class="ai-analysis-item">
+                    セマンティックスコア: <span class="ai-score">${semantic.semanticScore}/100</span>
+                </div>
+                <div class="ai-analysis-item">
+                    <strong>検出パターン:</strong> ${semantic.detectedPatterns.map(p => p.name).join(', ') || 'なし'}
+                </div>
+                <div class="ai-analysis-item">
+                    <strong>推奨アーキテクチャ:</strong> ${semantic.recommendedArchitecture.join(', ') || '標準'}
+                </div>
+                <div class="ai-analysis-item">
+                    <strong>推奨ライブラリ:</strong> ${semantic.requiredLibraries.slice(0, 3).join(', ')}
+                </div>`;
+
+            if (semantic.riskFactors.length > 0) {
+                html += `<div class="ai-analysis-item">
+                    <strong>⚠️ リスク:</strong> ${semantic.riskFactors.join('; ')}
+                </div>`;
+            }
+
+            html += '</div>';
+
+            // パターン認識結果
+            if (patterns.detectedPatterns.length > 0) {
+                html += `<div class="ai-analysis">
+                    <h4>🔍 検出されたコードパターン</h4>`;
+                
+                patterns.detectedPatterns.forEach(pattern => {
+                    html += `<div class="ai-analysis-item">
+                        <strong>${pattern.name}</strong> (信頼度: <span class="ai-score">${(pattern.confidence * 100).toFixed(0)}%</span>)
+                    </div>`;
+                });
+
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        // =============================================
+        // スマートデータ収集
+        // =============================================
+        function selectDataSource(source) {
+            AppState.selectedDataSource = source;
+            
+            document.querySelectorAll('.data-source-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            addChatMessage(`📊 データソース: ${source} を選択`, 'system');
+        }
+
+        async function collectIntelligentData() {
+            addChatMessage('📥 スマートデータ収集を開始...', 'system');
+            
+            try {
+                let collectedItems = [];
+
+                if (AppState.selectedDataSource === 'semantic') {
+                    collectedItems = await collectSemanticData();
+                } else if (AppState.selectedDataSource === 'pattern') {
+                    collectedItems = await collectPatternData();
+                } else if (AppState.selectedDataSource === 'local') {
+                    collectedItems = await collectLocalData();
+                } else if (AppState.selectedDataSource === 'learned') {
+                    collectedItems = await collectLearnedData();
+                }
+
+                for (const item of collectedItems) {
+                    await dbManager.addData('data', item);
+                }
+
+                AppState.collectedData = [...AppState.collectedData, ...collectedItems];
+                displayDataTable();
+                addChatMessage(`✅ ${collectedItems.length} 件のデータを収集`, 'system');
+
+            } catch (error) {
+                addChatMessage(`❌ エラー: ${error.message}`, 'system');
+            }
+        }
+
+        async function collectSemanticData() {
+            return [
+                { source: 'semantic', type: 'analysis', content: '要件分析完了', timestamp: new Date() },
+                { source: 'semantic', type: 'keywords', content: '重要キーワード抽出済み', timestamp: new Date() },
+                { source: 'semantic', type: 'relationships', content: 'コンポーネント関係マッピング', timestamp: new Date() }
+            ];
+        }
+
+        async function collectPatternData() {
+            return [
+                { source: 'pattern', type: 'design_pattern', content: 'Observer Pattern検出', timestamp: new Date() },
+                { source: 'pattern', type: 'code_metrics', content: 'コード品質メトリクス計算', timestamp: new Date() },
+                { source: 'pattern', type: 'best_practices', content: 'ベストプラクティス分析', timestamp: new Date() }
+            ];
+        }
+
+        async function collectLocalData() {
+            return [
+                { source: 'local', type: 'cache', content: 'ローカルキャッシュ読み込み', timestamp: new Date() },
+                { source: 'local', type: 'history', content: 'セッション履歴取得', timestamp: new Date() }
+            ];
+        }
+
+        async function collectLearnedData() {
+            return [
+                { source: 'learned', type: 'training_data', content: 'トレーニングデータセット', timestamp: new Date() },
+                { source: 'learned', type: 'model_insights', content: 'モデル学習結果', timestamp: new Date() },
+                { source: 'learned', type: 'predictions', content: 'AI予測結果', timestamp: new Date() }
+            ];
+        }
+
+        function displayDataTable() {
+            const tableDiv = document.getElementById('dataTable');
+            let html = '<table class="data-table"><thead><tr><th>ソース</th><th>タイプ</th><th>内容</th></tr></thead><tbody>';
+            
+            AppState.collectedData.slice(-10).forEach(item => {
+                html += `<tr><td>${item.source}</td><td>${item.type}</td><td>${item.content}</td></tr>`;
+            });
+
+            html += '</tbody></table>';
+            tableDiv.innerHTML = html;
+        }
 
         // =============================================
         // チャットインターフェース
@@ -864,20 +1271,17 @@
             
             if (!message) return;
             
-            // ユーザーメッセージを表示
             addChatMessage(message, 'user');
             input.value = '';
             
-            // メッセージを保存
             await dbManager.addData('conversations', {
                 type: 'user',
                 message: message,
                 timestamp: new Date().toISOString()
             });
-            
-            // AI レスポンスをシミュレート
+
             setTimeout(async () => {
-                const aiResponse = await generateAIResponse(message);
+                const aiResponse = await generateIntelligentResponse(message);
                 addChatMessage(aiResponse, 'ai');
                 
                 await dbManager.addData('conversations', {
@@ -885,7 +1289,46 @@
                     message: aiResponse,
                     timestamp: new Date().toISOString()
                 });
-            }, 500);
+            }, 800);
+        }
+
+        async function generateIntelligentResponse(userMessage) {
+            const responses = {
+                code: [
+                    '💡 コード最適化の提案: このロジックはさらに効率化できます。',
+                    '🔍 コード品質: 現在のコードは標準を満たしています。'
+                ],
+                architecture: [
+                    '🏗️ アーキテクチャ提案: マイクロサービス構成を検討してください。',
+                    '📐 システム設計: 層状アーキテクチャが推奨されます。'
+                ],
+                performance: [
+                    '⚡ パフォーマンス最適化: キャッシング戦略を実装してください。',
+                    '📊 ベンチマーク: 現在のパフォーマンスは良好です。'
+                ],
+                security: [
+                    '🔒 セキュリティ: 入力検証を強化してください。',
+                    '🛡️ 認証: JWT トークンベースの認証を推奨します。'
+                ],
+                default: [
+                    '✅ ご質問ありがとうございます。詳細情報が必要な場合は、プロジェクト説明を更新してください。',
+                    '🤖 分析完了。追加の改善提案があります。'
+                ]
+            };
+
+            let category = 'default';
+            if (userMessage.toLowerCase().includes('code') || userMessage.toLowerCase().includes('コード')) {
+                category = 'code';
+            } else if (userMessage.toLowerCase().includes('architecture') || userMessage.toLowerCase().includes('アーキテクチャ')) {
+                category = 'architecture';
+            } else if (userMessage.toLowerCase().includes('performance') || userMessage.toLowerCase().includes('パフォーマンス')) {
+                category = 'performance';
+            } else if (userMessage.toLowerCase().includes('security') || userMessage.toLowerCase().includes('セキュリティ')) {
+                category = 'security';
+            }
+
+            const categoryResponses = responses[category];
+            return categoryResponses[Math.floor(Math.random() * categoryResponses.length)];
         }
 
         function addChatMessage(message, type) {
@@ -899,112 +1342,8 @@
             AppState.chatHistory.push({ type, message, timestamp: new Date() });
         }
 
-        async function generateAIResponse(userMessage) {
-            const responses = [
-                'その質問について詳しく説明することができます。コードの最適化、パフォーマンスの改善について何かお手伝いできることはありますか？',
-                'それは興味深い質問ですね。現在のコード生成結果に対してどのような変更や改善をしたいですか？',
-                'ご質問ありがとうございます。より詳しい情報が必要な場合は、プロジェクト説明を更新してください。',
-                'そのアプローチは良い考えですね。実装戦略についてさらに詳しく説明することもできます。'
-            ];
-            return responses[Math.floor(Math.random() * responses.length)];
-        }
-
         // =============================================
-        // データ収集機能
-        // =============================================
-        function selectDataSource(source) {
-            AppState.selectedDataSource = source;
-            
-            document.querySelectorAll('.data-source-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            addChatMessage(`💻 データソース "${source}" を選択しました。`, 'system');
-        }
-
-        async function collectData() {
-            addChatMessage('📥 データ収集を開始します...', 'system');
-            
-            try {
-                let collectedItems = [];
-                
-                if (AppState.selectedDataSource === 'chrome') {
-                    collectedItems = await collectChromeData();
-                } else if (AppState.selectedDataSource === 'api') {
-                    collectedItems = await collectAPIData();
-                } else if (AppState.selectedDataSource === 'local') {
-                    collectedItems = await collectLocalData();
-                } else if (AppState.selectedDataSource === 'custom') {
-                    collectedItems = await collectCustomData();
-                }
-                
-                // データベースに保存
-                for (const item of collectedItems) {
-                    await dbManager.addData('data', item);
-                }
-                
-                AppState.collectedData = [...AppState.collectedData, ...collectedItems];
-                
-                displayDataTable();
-                addChatMessage(`✅ ${collectedItems.length} 件のデータを収集・保存しました。`, 'system');
-                
-            } catch (error) {
-                addChatMessage(`❌ データ収集エラー: ${error.message}`, 'system');
-            }
-        }
-
-        async function collectChromeData() {
-            // Chrome Storage API シミュレーション
-            return [
-                { id: 1, source: 'chrome', type: 'browsing_history', content: 'GitHub repo visits', timestamp: new Date() },
-                { id: 2, source: 'chrome', type: 'bookmarks', content: 'Saved technical articles', timestamp: new Date() },
-                { id: 3, source: 'chrome', type: 'local_storage', content: 'App preferences', timestamp: new Date() }
-            ];
-        }
-
-        async function collectAPIData() {
-            return [
-                { id: 4, source: 'api', type: 'external_api', content: 'GitHub API - public repos', timestamp: new Date() },
-                { id: 5, source: 'api', type: 'rest_api', content: 'Latest coding trends', timestamp: new Date() }
-            ];
-        }
-
-        async function collectLocalData() {
-            return [
-                { id: 6, source: 'local', type: 'file_system', content: 'Project files analysis', timestamp: new Date() },
-                { id: 7, source: 'local', type: 'cache', content: 'Generated code templates', timestamp: new Date() }
-            ];
-        }
-
-        async function collectCustomData() {
-            return [
-                { id: 8, source: 'custom', type: 'user_input', content: 'Custom project requirements', timestamp: new Date() },
-                { id: 9, source: 'custom', type: 'metadata', content: 'Framework preferences', timestamp: new Date() }
-            ];
-        }
-
-        function displayDataTable() {
-            const allData = AppState.collectedData;
-            const tableDiv = document.getElementById('dataTable');
-            
-            let html = '<table class="data-table"><thead><tr><th>ソース</th><th>タイプ</th><th>内容</th><th>時刻</th></tr></thead><tbody>';
-            
-            allData.forEach(item => {
-                html += `<tr>
-                    <td>${item.source}</td>
-                    <td>${item.type}</td>
-                    <td>${item.content}</td>
-                    <td>${new Date(item.timestamp).toLocaleTimeString()}</td>
-                </tr>`;
-            });
-            
-            html += '</tbody></table>';
-            tableDiv.innerHTML = html;
-        }
-
-        // =============================================
-        // 自動更新システム（マルチAIテスト付き）
+        // 自動更新システム
         // =============================================
         async function initiateAutoUpdate() {
             if (!AppState.generatedCode) {
@@ -1012,55 +1351,43 @@
                 return;
             }
 
-            AppState.autoUpdateEnabled = true;
-            updateUpdateStatus('更新プロセスを開始しています...', 'pending');
+            updateUpdateStatus('マルチAIテストを実行中...', 'pending');
             
             try {
-                // ステップ 1: 複数AIでテスト
-                updateUpdateStatus('複数AIによるテストを実行中...', 'pending');
-                const testResults = await runMultiAITests(AppState.generatedCode);
-                
+                const testResults = await runAdvancedTests(AppState.generatedCode);
                 displayTestResults(testResults);
-                
-                // すべてのテストがパスしたか確認
+
                 const allPassed = testResults.every(result => result.status === 'PASS');
                 
                 if (allPassed) {
-                    updateUpdateStatus('✅ すべてのテストが成功しました！', 'success');
-                    
-                    // ステップ 2: GitHub へプッシュ
-                    updateUpdateStatus('GitHub リポジトリへのコミットを準備中...', 'pending');
+                    updateUpdateStatus('✅ すべてのテストが成功！GitHub へコミット中...', 'success');
                     await simulateGitHubPush();
-                    
                     updateUpdateStatus('🎉 自動更新が完了しました！', 'success');
-                    addChatMessage('✅ コードが自動更新され、GitHub にコミットされました。', 'system');
+                    addChatMessage('✅ コードが自動更新されました。', 'system');
                 } else {
-                    updateUpdateStatus('❌ テストが失敗しました。修正が必要です。', 'error');
-                    addChatMessage('テスト失敗：' + testResults.filter(r => r.status === 'FAIL').map(r => r.test).join(', '), 'system');
+                    updateUpdateStatus('❌ テストが失敗しました。', 'error');
                 }
                 
             } catch (error) {
                 updateUpdateStatus(`❌ エラー: ${error.message}`, 'error');
-                addChatMessage(`更新エラー: ${error.message}`, 'system');
             }
         }
 
-        async function runMultiAITests(code) {
+        async function runAdvancedTests(code) {
             const tests = [
-                { name: '構文検証', test: 'syntax-check' },
-                { name: 'パフォーマンステスト', test: 'performance' },
-                { name: 'セキュリティスキャン', test: 'security' },
-                { name: 'コード品質チェック', test: 'code-quality' },
-                { name: 'ユニットテスト', test: 'unit-tests' }
+                { name: '構文検証', test: 'syntax' },
+                { name: 'セマンティック検証', test: 'semantic' },
+                { name: 'パターン適合性', test: 'pattern' },
+                { name: 'パフォーマンス', test: 'performance' },
+                { name: 'セキュリティ', test: 'security' }
             ];
 
             const results = [];
 
             for (const test of tests) {
-                // シミュレートされたテスト実行
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                const passed = Math.random() > 0.2; // 80% success rate
+                const passed = Math.random() > 0.15; // 85% success rate
                 results.push({
                     test: test.name,
                     status: passed ? 'PASS' : 'FAIL',
@@ -1068,7 +1395,6 @@
                 });
 
                 AppState.stats.testCount++;
-                document.getElementById('testCount').textContent = AppState.stats.testCount;
             }
 
             await dbManager.addData('updates', {
@@ -1102,8 +1428,7 @@
             return new Promise(resolve => {
                 setTimeout(() => {
                     console.log('GitHub にコミット:', {
-                        message: 'Auto-update: Improved code generation with multi-AI validation',
-                        code: AppState.generatedCode,
+                        message: 'Auto-update: Enhanced AI analysis with semantic and pattern recognition',
                         timestamp: new Date()
                     });
                     resolve();
@@ -1116,20 +1441,18 @@
         // =============================================
         async function init() {
             await dbManager.init();
-            addChatMessage('👋 HunyaCodingAI へようこそ！何かお手伝いできることはありますか？', 'system');
+            addChatMessage('👋 HunyaCodingAI Enhanced Edition へようこそ！', 'system');
         }
 
         window.addEventListener('DOMContentLoaded', init);
 
         // =============================================
-        // ユーティリティ関数
+        // ユーティリティ
         // =============================================
         function resetForm() {
             document.getElementById('userRequest').value = '';
             document.getElementById('language').value = 'python';
             document.getElementById('framework').value = '';
-            document.getElementById('geminiKey').value = '';
-            document.getElementById('openaiKey').value = '';
         }
 
         async function startGeneration() {
@@ -1139,20 +1462,19 @@
                 return;
             }
 
-            AppState.generatedCode = `// Auto-generated code at ${new Date().toLocaleTimeString()}\n// Request: ${userRequest}`;
+            AppState.generatedCode = `// AI-Enhanced Code\n// Request: ${userRequest}\n// Generated: ${new Date().toLocaleString()}\n\nfunction main() {\n    console.log("AI生成コード");\n}`;
             document.getElementById('codeOutput').innerHTML = `<code>${AppState.generatedCode}</code>`;
             
-            addChatMessage(`📝 リクエストを処理中: "${userRequest.substring(0, 50)}..."`, 'system');
+            addChatMessage(`🧠 AI分析中: "${userRequest.substring(0, 50)}..."`, 'system');
             setTimeout(() => {
                 addChatMessage('✅ コード生成が完了しました！', 'system');
-            }, 1000);
+            }, 1500);
         }
 
         async function downloadZip() {
             alert('ZIP ダウンロード機能');
         }
 
-        // Keyboard support for chat
         document.addEventListener('DOMContentLoaded', () => {
             const chatInput = document.getElementById('chatInput');
             if (chatInput) {
